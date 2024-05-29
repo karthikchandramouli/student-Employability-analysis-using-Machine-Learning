@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Login</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            background-image: url('/static/images/ree.jpeg'); /* Replace '/path/to/your/image.jpg' with the actual path to your image */
+            background-size: cover;
+            background-position: center;
+            background-color: #99DDFF; /* Fallback background color */
+        }
+        
+
+        .login-card {
+            width: 400px;
+            background-color: rgba(255, 255, 255, 0.9); /* Transparent background color */
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            background-image: url('/static/images/ree.jpeg');
+            border: 2px solid #99DDFF; /* Add color to the border */
+        }
+        
+
+        .login-card h1 {
+            margin-bottom: 30px;
+            color: #ffffff;
+        }
+
+        .login-form label {
+            text-align: left;
+            color: #ffffff;
+        }
+
+        .login-form input[type="email"],
+        .login-form input[type="password"] {
+            border-radius: 5px;
+        }
+
+        .login-form input[type="submit"] {
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .signup-link {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #ffffff;
+        }
+
+        .signup-link a {
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Media Queries */
+        @media (max-width: 480px) {
+            .login-card {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <h1 class="mb-4">Recruitment Login</h1>
+        <form class="login-form" method="POST" action="{{ url_for('login') }}">
+            <div class="mb-3">
+                <label for="email" class="form-label">Email:</label>
+                <input type="email" id="email" name="email" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password:</label>
+                <input type="password" id="password" name="password" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Login</button>
+        </form>
+        <div class="signup-link">
+            Don't have an account? <a href="{{ url_for('signup') }}">Sign Up</a>
+        </div>
+    </div>
+</body>
+</html>

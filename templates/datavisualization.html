@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Visualization</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #007bff; /* Header background color */
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 36px; /* Increase header font size */
+        }
+        /* Navigation Styles */
+        nav {
+            background-color: #007bff;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        nav ul li {
+            float: left;
+        }
+
+        nav ul li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        nav ul li a:hover {
+            background-color: #0056b3;
+        }
+
+        .active {
+            background-color: #0056b3;
+        }
+        /* Folder Styles */
+        .folder-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .folder {
+            margin: 10px;
+            padding: 20px;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 24px;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .folder:hover {
+            background-color: #0056b3;
+        }
+        /* Excel Content Styles */
+        #excel-content {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #f0f0f0; /* Light gray background */
+            overflow: auto; /* Enable scrolling if content exceeds container */
+            display: flex; /* Enable flex layout */
+            flex-wrap: wrap; /* Allow containers to wrap */
+            justify-content: center; /* Center align chart containers horizontally */
+        }
+                
+        /* Chart Styles */
+        .chart-container h2 {
+            margin-bottom: 10px;
+            font-size: 24px;
+            text-align: center;
+            color: #333333; /* Set color for chart title */
+        }
+        .chart-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+        .chart-container img {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px; /* Add rounded corners to the chart image */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        #visualization-image {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+        }
+        
+        .chart-container-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+        }
+        
+        .chart-container {
+            margin: 10px;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            min-width: 500px;
+            max-width: 500px;
+            transition: all 0.3s ease;
+        }
+        /* Download Button Styles */
+        /* Download Button Styles */
+        .download-button {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .download-button button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            font-size: 16px;
+        }
+        
+        .download-button button:hover {
+            background-color: #0056b3;
+        }
+        @media print {
+            .chart-container {
+                width: 100%; /* Adjust the width as needed */
+                height: auto; /* Adjust the height as needed */
+                margin: 0 auto; /* Center the chart container horizontally */
+                page-break-inside: avoid; /* Avoid breaking charts across pages */
+            }
+        }
+        footer {
+            background-color: #f4f4f4;
+            color: #777;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            font-size: 16px;
+        }
+        /* CSS Styles */
+        .file-links-container {
+            margin-top: 20px;
+        }
+        
+        .file-link {
+            display: block;
+            margin-bottom: 5px;
+            color: #007bff;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        
+        .file-link:hover {
+            text-decoration: underline;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        /* Loader Styles */
+.loader {
+    border: 4px solid #f3f3f3; /* Light grey */
+    border-top: 4px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 999; /* Ensure loader is on top of other elements */
+}
+
+/* Hide loader by default */
+.loader.hidden {
+    display: none;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+        
+        
+    </style>
+</head>
+<body>
+   <!-- Navigation Bar -->
+   <nav>
+        <ul>
+            <li><a  href="{{ url_for('admin_dashboard') }}">Home</a></li>
+            <li><a href="{{ url_for('student_details') }}">Upload Files</a></li>
+            <li><a   href="{{ url_for('reports') }}">View student details</a></li>
+            <li><a  class="active" href="{{ url_for('datavisualization') }}">Data Visualization Report</a></li>
+        </ul>
+    </nav>
+    <header>
+        Data Visualization Dashboard
+    </header>
+
+    <div class="container">
+        <div class="folder-container">
+            <!-- Loop through folders and display each folder as a clickable item -->
+            {% for year_folder in year_folders %}
+                <div class="folder" onclick="showExcelFiles('{{ year_folder }}')">
+                    <i class="fas fa-folder-open fa-3x" style="margin-right: 10px;"></i>
+                    {{ year_folder }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <div id="excel-content">
+        <!-- This is where the visualization will be displayed -->
+        <div id="visualization-image">
+            <!-- The chart containers will be added dynamically here -->
+            <div class="chart-container-wrapper">
+                <!-- Each chart container will be added dynamically here -->
+            </div>
+        </div>
+        <!-- File links will be displayed here -->
+        <div id="file-links"></div>
+    </div>
+    <!-- Loader -->
+<div id="loader" class="loader hidden"></div>
+
+    
+
+    <!-- Button to trigger print dialog -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div class="download-button">
+                    <button onclick="printCharts()">Print Charts</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+// Function to fetch and display Excel files for a selected year
+// Function to fetch and display Excel files for a selected year
+function showExcelFiles(year) {
+    // Show loader
+    document.getElementById('loader').classList.remove('hidden');
+
+    // Remove 'hidden' class from file links container to make it visible
+    document.getElementById('file-links').classList.remove('hidden');
+
+    // Clear previous visualization content and file links
+    document.getElementById("visualization-image").innerHTML = '';
+    document.getElementById("file-links").innerHTML = '';
+
+    // Fetch Excel files for the selected year
+    fetch('/datavisualization/get_excel_files?year=' + year)
+        .then(response => response.json())
+        .then(data => {
+            // Loop through the list of Excel files and display each file name as a link
+            data.forEach(file => {
+                const fileName = file.split('\\').pop(); // Extract file name without path
+                const link = document.createElement('a');
+                link.textContent = fileName;
+                link.href = "#";
+                link.classList.add('file-link');
+                link.onclick = function() { showExcelContent(file); return false; };
+
+                // Append the link to the file-links div
+                document.getElementById('file-links').appendChild(link);
+            });
+
+            // Hide loader once files are loaded
+            document.getElementById('loader').classList.add('hidden');
+        });
+}
+
+
+// Function to display content for selected Excel file and hide file links
+function showExcelContent(filePath) {
+    // Hide file links
+    document.getElementById('file-links').classList.add('hidden');
+
+    // Fetch data visualization for the selected Excel file
+    fetch('/datavisualization/display_visualization?file_path=' + filePath)
+        .then(response => response.json())
+        .then(data => {
+            // Create a div to hold all the chart containers
+            const chartContainer = document.createElement('div');
+            chartContainer.classList.add('chart-container-wrapper');
+
+            // Loop through the data and create a chart container for each chart
+            Object.keys(data).forEach(chartTitle => {
+                appendChartContainer(chartContainer, chartTitle, data[chartTitle]);
+            });
+
+            // Append the chart container wrapper to the visualization image
+            document.getElementById("visualization-image").appendChild(chartContainer);
+        });
+}
+
+// Function to append a chart container with a title and image
+function appendChartContainer(parent, title, imageUrl) {
+    const chartContainer = document.createElement('div');
+    chartContainer.classList.add('chart-container');
+    chartContainer.innerHTML = `<h2>${title}</h2><img src="${imageUrl}" alt="${title}">`;
+    parent.appendChild(chartContainer);
+}
+
+
+// Function to append a chart container with a title and image
+// Function to append a chart container with a title and image
+function appendChartContainer(parent, title, imageUrl) {
+    const chartContainer = document.createElement('div');
+    chartContainer.classList.add('chart-container');
+
+    // Create a header for the chart title
+    const chartHeader = document.createElement('h2');
+    chartHeader.textContent = title;
+
+    // Create an image element for the chart
+    const chartImage = document.createElement('img');
+    chartImage.src = imageUrl;
+    chartImage.alt = title;
+
+    // Append the header and image to the chart container
+    chartContainer.appendChild(chartHeader);
+    chartContainer.appendChild(chartImage);
+
+    // Append the chart container to the parent element
+    parent.appendChild(chartContainer);
+}
+
+function printCharts() {
+    // Create a new window
+    var printWindow = window.open('', '_blank');
+
+    // Start building the HTML content for the new window
+    var printContent = '<!DOCTYPE html>';
+    printContent += '<html>';
+    printContent += '<head>';
+    printContent += '<title>Print Charts</title>';
+    printContent += '</head>';
+    printContent += '<body>';
+
+    // Loop through the chart containers and include them in the print content
+    var chartContainers = document.querySelectorAll('.chart-container');
+    chartContainers.forEach(function(container) {
+        printContent += container.outerHTML;
+    });
+
+    // Close the HTML body and document
+    printContent += '</body>';
+    printContent += '</html>';
+
+    // Write the HTML content to the new window
+    printWindow.document.open();
+    printWindow.document.write(printContent);
+    printWindow.document.close();
+
+    // Trigger the print dialog for the new window
+    printWindow.print();
+}
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #007bff; /* Header background color */
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 36px; /* Increase header font size */
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        /* Navigation Styles */
+        nav {
+            background-color: #007bff;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        nav ul li {
+            float: left;
+        }
+
+        nav ul li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        nav ul li a:hover {
+            background-color: #0056b3;
+        }
+
+        .active {
+            background-color: #0056b3;
+        }
+        /* Folder Styles */
+        .folder-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .folder {
+            margin: 10px;
+            padding: 20px;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 24px;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .folder:hover {
+            background-color: #0056b3;
+        }
+        /* Excel Content Styles */
+        /* Excel Content Styles */
+        #excel-content {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #f0f0f0;
+            overflow-x: auto; /* Allow horizontal scrolling if needed */
+        }
+        
+        /* Responsive Table */
+        table {
+            width: 100%; /* Ensure the table occupies 100% of its container */
+            border-collapse: collapse; /* Collapse border spacing */
+        }
+        
+        th, td {
+            padding: 8px; /* Add padding to table cells */
+            border: 1px solid #ddd; /* Add border to table cells */
+            text-align: left; /* Align text to the left */
+        }
+        
+        th {
+            background-color: #f2f2f2; /* Light gray background for table headers */
+        }
+        
+        .file-link {
+            display: block;
+            color: #007bff;
+            font-size: 18px;
+            margin-bottom: 10px;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #ccc;
+            text-align: left; /* Align text to the left */
+        }
+        
+        .file-link:hover {
+            color: #0056b3;
+        }
+        footer {
+            background-color: #f4f4f4;
+            color: #777;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            font-size: 16px;
+        }
+        
+    </style>
+</head>
+<body>
+   <!-- Navigation Bar -->
+   <nav>
+    <ul>
+        <li><a  href="{{ url_for('admin_dashboard') }}">Home</a></li>
+        <li><a href="{{ url_for('student_details') }}">Upload Files</a></li>
+        <li><a   class="active" href="{{ url_for('reports') }}">View student details</a></li>
+        <li><a href="{{ url_for('datavisualization') }}">Data Visualization Report</a></li>
+    </ul>
+</nav>
+    <header>
+        Reports
+    </header>
+    <div class="container">
+        <div class="folder-container">
+            <!-- Loop through folders and display each folder as a clickable item -->
+            {% for year_folder in year_folders %}
+                <div class="folder" onclick="showExcelFiles('{{ year_folder }}')">{{ year_folder }}</div>
+            {% endfor %}
+        </div>
+
+        <!-- Container to display Excel content -->
+        <div id="excel-content"></div>
+    </div>
+    <footer>
+        &copy; 2024 Final Year Project
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script>
+        // Function to fetch and display Excel files for a selected year
+        function showExcelFiles(year) {
+            // Clear previous content
+            document.getElementById("excel-content").innerHTML = '';
+
+            // Fetch Excel files for the selected year
+            fetch('/reports/get_excel_files?year=' + year)
+                .then(response => response.json())
+                .then(data => {
+                    // Loop through the list of Excel files and display each file name
+                    data.forEach(file => {
+                        // Extract the filename from the file path
+                        const fileName = file.split('\\').pop();
+                        // Create a clickable link to show Excel content when clicked
+                        const link = document.createElement('a');
+                        link.textContent = fileName;
+                        link.href = "#";
+                        link.classList.add('file-link');
+                        link.onclick = function() { showExcelContent(file); return false; };
+                        // Append the link to the 'excel-content' div
+                        document.getElementById('excel-content').appendChild(link);
+                    });
+                });
+        }
+
+        // Function to fetch and display Excel content for a selected file
+// Function to fetch and display Excel content for a selected file
+function showExcelContent(filePath) {
+    fetch('/reports/display_excel?file_path=' + filePath)
+        .then(response => response.text())
+        .then(data => {
+            // Display the content in the 'excel-content' div
+            document.getElementById("excel-content").innerHTML = data;
+
+            // Set text alignment to left for name and internship attributes
+            const nameElements = document.querySelectorAll('.name');
+            nameElements.forEach(element => {
+                element.style.textAlign = 'left';
+            });
+
+            const internshipElements = document.querySelectorAll('.internship');
+            internshipElements.forEach(element => {
+                element.style.textAlign = 'left';
+            });
+        });
+}
+
+
+    </script>
+</body>
+</html>

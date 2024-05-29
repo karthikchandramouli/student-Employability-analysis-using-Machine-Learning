@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body, html {
+            /* Set background image */
+            background-image: url('/static/images/karthiksendplacement.jpg');
+            /* Center and scale the background image */
+            background-position: center;
+            background-size: cover;
+            /* Display flex to center content */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* Set height to 100% of viewport height */
+            height: 100vh;
+        }
+        
+        
+
+        .login-card {
+            max-width: 400px;
+            background-color: #EVF1FC;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            border: 2px solid #99DDFF; /* Add color to the border */
+        }
+        
+
+
+        .login-card h1 {
+            color: #ffffff;
+            margin-bottom: 30px;
+        }
+
+        .login-form label {
+            color: #ffffff;
+            font-weight: bold;
+            text-align: left;
+        }
+
+        .login-form input[type="email"],
+        .login-form input[type="password"],
+        .login-form input[type="submit"] {
+            border-radius: 5px;
+        }
+
+        .login-form .error-message {
+            color: red;
+            margin-top: 10px;
+            text-align: center;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-card-container">
+        <div class="login-card">
+            <h1 class="mb-4">Placement Login</h1>
+            <form class="login-form" method="POST" action="{{ url_for('admin_login') }}">
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email:</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password:</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+            {% if error %}
+                <div class="error-message mt-3">{{ error }}</div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

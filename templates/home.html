@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Students</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        header {
+            background-color: #007bff; /* Header background color */
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+        .container {
+            max-width: 1000px; /* Increased max-width */
+            margin: 40px auto; /* Increased margin */
+            padding: 30px; /* Increased padding */
+            background-color: #fff;
+            border-radius: 12px; /* Increased border radius */
+            box-shadow: 0 0 20px rgba(0,0,0,0.1); /* Increased box shadow */
+        }
+        
+        /* Folder Styles */
+        .folder-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .folder {
+            margin: 10px;
+            padding: 20px;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 24px;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .folder:hover {
+            background-color: #0056b3;
+        }
+        /* Priority Menu Styles */
+        .priority-menu {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        /* Priority Menu Styles */
+.priority-form {
+    width: 100%;
+}
+
+.priority-field {
+    flex: 1 0 auto;
+}
+
+.priority-field label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.priority-select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    color: #333;
+    font-size: 16px;
+    appearance: none;
+}
+
+.form-group {
+    margin-bottom: 0;
+}
+
+.btn-lg {
+    padding: 10px 20px;
+    font-size: 18px;
+}
+
+    
+        .btn-primary {
+            padding: 10px 20px; /* Adjust button padding */
+            font-size: 16px;
+        }
+        .priority-field select:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+        /* Submit Button Styles */
+        .submit-button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+    
+        .submit-button:hover {
+            background-color: #0056b3;
+        }
+        /* Top 15 Students Table Styles */
+        #top-students-table {
+            margin-top: 20px;
+        }
+    
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+    
+        th, td {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+    
+        th {
+            background-color: #007bff; /* Header background color */
+            color: #fff;
+        }
+    
+        /* Center the 'No data available' message */
+        .text-center {
+            text-align: center;
+        }
+        /* Logout Button Styles */
+        .logout-button {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .logout-link {
+            display: inline-block;
+            background-color: #dc3545;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        .logout-link:hover {
+            background-color: #c82333;
+        }
+        /* Responsive */
+        @media (max-width: 768px) {
+            .priority-field {
+                flex: 1 0 50%; /* Adjust priority field width for smaller screens */
+            }
+        }
+            .folder-container {
+                width: 100%;
+            }
+        }
+        .container-fluid {
+            background-color: #f8f9fa; /* Background color for the container */
+            padding-top: 20px; /* Add some top padding */
+            padding-bottom: 20px; /* Add some bottom padding */
+        }
+    
+        .container-xl {
+            max-width: 1200px; /* Adjust the max-width as needed */
+            margin: auto;
+            padding: 0 15px; /* Add padding to match Bootstrap's container */
+            border-radius: 8px; /* Add border-radius for a softer look */
+            box-shadow: 0 0 15px rgba(0,0,0,0.1); /* Add a subtle shadow */
+            background-color: #fff; /* Background color for the inner container */
+        }
+        .file-link {
+            display: block; /* Display the links as block elements */
+            margin-bottom: 5px; /* Add some space between each link */
+            text-decoration: none; /* Remove the default underline */
+            color: #007bff; /* Set link color to blue */
+            font-size: 16px; /* Set font size */
+        }
+        /* Loader Styles */
+#loader {
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #007bff; /* Blue */
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    animation: spin 2s linear infinite;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -40px; /* Half of the loader height */
+    margin-left: -40px; /* Half of the loader width */
+    z-index: 9999; /* Ensure loader appears above other elements */
+    display: none; /* Initially hide the loader */
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+.input-group {
+    flex-grow: 1; /* Allow input group to grow and take up available space */
+}
+
+label {
+    font-weight: bold; /* Make label text bold */
+}
+    </style>
+</head>
+<body>
+    <header>
+        SHORTLISTING TOOL
+    </header>
+    <!-- Loader HTML -->
+<div id="loader"></div>
+
+    <div class="container-fluid mt-5">
+        <div class="folder-container d-flex justify-content-center">
+            <!-- Loop through folders and display each folder as a clickable item -->
+            {% for year_folder in year_folders %}
+                <div class="folder mx-3" onclick="showExcelFiles('{{ year_folder }}')">
+                    <i class="fas fa-folder-open fa-3x mb-2"></i>
+                    <div>{{ year_folder }}</div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    
+
+    <!-- Container to display Excel content -->
+    <div class="container mt-5">
+        <div id="excel-content"></div>
+    </div>
+
+    <div class="container mt-5">
+        <h2 class="mb-4">Select Priority for Each Field</h2>
+        <form method="post" action="/home" class="priority-form d-flex justify-content-start flex-wrap">
+            <div class="priority-field mx-3">
+                <label for="priority1_SelectedOptions">Priority 1:</label>
+                <select name="priority1_SelectedOptions" id="priority1_SelectedOptions" class="form-control ">
+                    <option value="CGPA" {% if priority1_selected == 'CGPA' %} selected {% endif %}>CGPA</option>
+                    <option value="INTERNSHIP" {% if priority1_selected == 'INTERNSHIP' %} selected {% endif %}>Internship</option>
+                    <option value="DSA" {% if priority1_selected == 'DSA' %} selected {% endif %}>DSA</option>
+                    <option value="CNS" {% if priority1_selected == 'CNS' %} selected {% endif %}>CNS</option>
+                    <option value="DBMS" {% if priority1_selected == 'DBMS' %} selected {% endif %}>DBMS</option>
+                </select>
+                <input type="hidden" name="priority1_selected" value="1">
+            </div>
+    
+            <div class="priority-field mx-3">
+                <label for="priority2_SelectedOptions">Priority 2:</label>
+                <select name="priority2_SelectedOptions" id="priority2_SelectedOptions" class="form-control">
+                    <option value="CGPA" {% if priority2_selected == 'CGPA' %} selected {% endif %}>CGPA</option>
+                    <option value="INTERNSHIP" {% if priority2_selected == 'INTERNSHIP' %} selected {% endif %}>Internship</option>
+                    <option value="DSA" {% if priority2_selected == 'DSA' %} selected {% endif %}>DSA</option>
+                    <option value="CNS" {% if priority2_selected == 'CNS' %} selected {% endif %}>CNS</option>
+                    <option value="DBMS" {% if priority2_selected == 'DBMS' %} selected {% endif %}>DBMS</option>
+                </select>
+                <input type="hidden" name="priority2_selected" value="0.6">
+            </div>
+    
+            <div class="priority-field mx-3">
+                <label for="priority3_SelectedOptions">Priority 3:</label>
+                <select name="priority3_SelectedOptions" id="priority3_SelectedOptions" class="form-control">
+                    <option value="CGPA" {% if priority3_selected == 'CGPA' %} selected {% endif %}>CGPA</option>
+                    <option value="INTERNSHIP" {% if priority3_selected == 'INTERNSHIP' %} selected {% endif %}>Internship</option>
+                    <option value="DSA" {% if priority3_selected == 'DSA' %} selected {% endif %}>DSA</option>
+                    <option value="CNS" {% if priority3_selected == 'CNS' %} selected {% endif %}>CNS</option>
+                    <option value="DBMS" {% if priority3_selected == 'DBMS' %} selected {% endif %}>DBMS</option>
+                </select>
+                <input type="hidden" name="priority3_selected" value="0.3">
+            </div>
+    
+            <div class="priority-field mx-3">
+                <label for="priority4_SelectedOptions">Priority 4:</label>
+                <select name="priority4_SelectedOptions" id="priority4_SelectedOptions" class="form-control">
+                    <option value="CGPA" {% if priority4_selected == 'CGPA' %} selected {% endif %}>CGPA</option>
+                    <option value="INTERNSHIP" {% if priority4_selected == 'INTERNSHIP' %} selected {% endif %}>Internship</option>
+                    <option value="DSA" {% if priority4_selected == 'DSA' %} selected {% endif %}>DSA</option>
+                    <option value="CNS" {% if priority4_selected == 'CNS' %} selected {% endif %}>CNS</option>
+                    <option value="DBMS" {% if priority4_selected == 'DBMS' %} selected {% endif %}>DBMS</option>
+                </select>
+                <input type="hidden" name="priority4_selected" value="0.1">
+            </div>
+    
+            <div class="priority-field mx-3">
+                <label for="priority5_SelectedOptions">Priority 5:</label>
+                <select name="priority5_SelectedOptions" id="priority5_SelectedOptions" class="form-control">
+                    <option value="CGPA" {% if priority5_selected == 'CGPA' %} selected {% endif %}>CGPA</option>
+                    <option value="INTERNSHIP" {% if priority5_selected == 'INTERNSHIP' %} selected {% endif %}>Internship</option>
+                    <option value="DSA" {% if priority5_selected == 'DSA' %} selected {% endif %}>DSA</option>
+                    <option value="CNS" {% if priority5_selected == 'CNS' %} selected {% endif %}>CNS</option>
+                    <option value="DBMS" {% if priority5_selected == 'DBMS' %} selected {% endif %}>DBMS</option>
+                </select>
+                <input type="hidden" name="priority5_selected" value="0">
+            </div>
+
+            <div class="form-group col-md-3">
+                <label for="top_students" class="mb-0">Number of Top Students:</label>
+                <div class="input-group">
+                    <input type="number" name="top_students" id="top_students" class="form-control rounded-0" value="0" min="1">
+                </div>
+            </div>
+            <div class="form-group col-md-2 align-self-end">
+                <button type="submit" class="btn btn-primary btn-block">Submit</button>
+            </div>
+                </div>
+            </div>
+        </form>
+    </div>
+   
+    <div class="container-fluid mt-5">
+        <div class="container-xl">
+            <h1 class="mt-5 text-center">The Top Students</h1>
+            <div id="top-students-table" class="table-responsive">
+                {% if table %}
+                    {{ table | safe }}
+                {% else %}
+                    <p class="text-center">No data available.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="text-center mt-3">
+        <button onclick="downloadCSV()" class="btn btn-primary">Download Table</button>
+    </div>
+    
+    <div class="logout-button mt-5">
+        <a href="{{ url_for('logout') }}" class="logout-link btn btn-danger">Logout</a>
+    </div>
+
+ <!-- Bootstrap JS and jQuery (Optional) -->
+ <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+ <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+ <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+ <!-- Font Awesome Script -->
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+ <script>
+     // Function to fetch and display Excel files for a selected year
+     function showExcelFiles(year) {
+        // Show loader while fetching data
+        showLoader();
+    
+        // Clear previous content
+        document.getElementById("excel-content").innerHTML = '';
+    
+        // Fetch Excel files for the selected year using the new endpoint
+        fetch('/home/get_files_excel?year=' + year)
+            .then(response => response.json())
+            .then(data => {
+                // Loop through the list of Excel files and display each file name
+                data.forEach(file => {
+                    // Extract the filename from the file path
+                    const fileName = file.split('\\').pop();
+                    // Create a clickable link to load Excel content when clicked
+                    const link = document.createElement('a');
+                    link.textContent = fileName;
+                    link.href = "#";
+                    link.classList.add('file-link');
+                    link.onclick = function() { loadExcelFile(file); return false; };
+                    // Create a div element to contain the link
+                    const div = document.createElement('div');
+                    // Append the link to the div
+                    div.appendChild(link);
+                    // Append the div to the 'excel-content' div
+                    document.getElementById('excel-content').appendChild(div);
+                });
+    
+                // Hide loader after data is fetched
+                hideLoader();
+            });
+    }
+    
+    function loadExcelFile(filePath) {
+        // Show loader while fetching data
+        showLoader();
+    
+        fetch('/home/load_excel', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'file_path=' + filePath,
+        })
+        .then(() => {
+            // Hide loader after data is fetched and displayed
+            hideLoader();
+    
+            // Reload the page to reflect changes in the DataFrame df
+            window.location.reload();
+        });
+    }
+    
+
+     function downloadCSV() {
+        // Capture the HTML content from the table
+        const htmlContent = document.getElementById('top-students-table').innerHTML;
+    
+        // Send a POST request to the server to generate the CSV file
+        fetch('/home/download_csv', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'htmlContent=' + encodeURIComponent(htmlContent),
+        })
+        .then(response => response.blob())
+        .then(blob => {
+            // Create a temporary anchor element
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'top_students.csv'; // Set the filename for the CSV file
+            // Trigger a click event to download the CSV file
+            document.body.appendChild(a);
+            a.click();
+            // Remove the temporary anchor element
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        })
+        .catch(error => {
+            console.error('Error downloading CSV:', error);
+            alert('An error occurred while downloading the CSV file.');
+        });
+    }
+// Function to show the loader
+function showLoader() {
+    document.getElementById("loader").style.display = "block";
+}
+
+// Function to hide the loader
+function hideLoader() {
+    document.getElementById("loader").style.display = "none";
+}
+
+
+ </script>
+</body>
+</html>

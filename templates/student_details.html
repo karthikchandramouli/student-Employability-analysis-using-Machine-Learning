@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Details</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 36px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        #batch-container {
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 10px;
+        }
+        select, button {
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: background-color 0.3s ease;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        footer {
+            background-color: #f4f4f4;
+            color: #777;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            font-size: 16px;
+        }
+        /* Updated CSS for the displayed batch year */
+        #added-batches {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .added-batch-item {
+            margin: 10px;
+            padding: 20px;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 20px;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .added-batch-item:hover {
+            background-color: #0056b3;
+        }
+        .selected-batch {
+            background-color: #007bff;
+            color: #fff;
+        }
+        .added-batch-item.uploaded {
+            background-color: #4CAF50;
+            color: white;
+        }
+        /* Updated CSS for the upload form */
+        .upload-form {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .upload-form h3 {
+            margin-bottom: 15px;
+            color: #007bff;
+            font-size: 24px;
+        }
+
+        .upload-form .form-group {
+            margin-bottom: 20px;
+        }
+
+        .upload-form .file-label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .upload-form .file-input {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            border: 2px dashed #007bff;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            color: #007bff;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .upload-form .file-input:focus {
+            outline: none;
+            border-color: #0056b3;
+        }
+
+        .upload-form button[type="button"] {
+            padding: 12px 24px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+        }
+
+        .upload-form button[type="button"]:hover {
+            background-color: #0056b3;
+        }
+        /* Updated CSS for the add batch button */
+        #add-batch-btn {
+            padding: 12px 30px; /* Adjust padding */
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+        }
+        #add-batch-btn span {
+            margin-right: 5px; /* Add space between text and icon */
+        }
+        #add-batch-btn:hover {
+            background-color: #0056b3;
+        }
+        .batch-container {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            
+        }
+        /* Navigation Styles */
+        nav {
+            background-color: #007bff;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        nav ul li {
+            float: left;
+        }
+
+        nav ul li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        nav ul li a:hover {
+            background-color: #0056b3;
+        }
+
+        .active {
+            background-color: #0056b3;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <ul>
+            <li><a  href="{{ url_for('admin_dashboard') }}">Home</a></li>
+            <li><a class="active" href="{{ url_for('student_details') }}">Upload Files</a></li>
+            <li><a href="{{ url_for('reports') }}">View student details</a></li>
+            <li><a href="{{ url_for('datavisualization') }}">Data Visualization Report</a></li>
+        </ul>
+    </nav>
+    <header>
+        Student Details
+    </header>
+    <div class="container">
+        <div id="batch-container">
+            <label for="batch">Select Batch:</label>
+            <select id="batch" name="batch" class="form-control">
+                <option value="2024">2024</option>
+                <option value="2023">2023</option>
+                <option value="2022">2022</option>
+                <option value="2021">2021</option>
+                <option value="2020">2020</option>
+                <option value="2019">2019</option>
+            </select>
+            <div class="mt-3"> <!-- Add margin-top for spacing -->
+                <button type="button" id="add-batch-btn" class="btn btn-primary">
+                    <span>Add Batch</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="none" d="M0 0h24v24H0z"/>
+                        <path d="M18 12l-6 6V6z"/>
+                    </svg>
+                </button>
+                
+            </div>
+        </div>
+        
+       <!-- Display stored batch years -->
+<div id="added-batches" class="batch-container">
+    <!-- Batch years will be dynamically added here -->
+</div>
+
+
+        <!-- Upload form -->
+        <form id="upload-form" action="/student-details" method="POST" enctype="multipart/form-data" style="display: none;">
+            <input type="hidden" id="selected-batch" name="batch">
+            <div class="upload-form">
+                <h3>Upload Student Details</h3>
+                <div class="form-group">
+                    <label for="upload_file" class="file-label">Choose File:</label>
+                    <input type="file" name="upload_file" id="upload_file" class="file-input">
+                </div>
+                <button type="button" id="upload-btn" class="btn btn-primary">Upload</button>
+            </div>
+        </form>
+
+    </div>
+    
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Load stored batch years from sessionStorage
+            const storedBatches = JSON.parse(sessionStorage.getItem("batches")) || [];
+            displayStoredBatches(storedBatches);
+
+            // Add Batch button click event
+            document.getElementById("add-batch-btn").addEventListener("click", function () {
+                const selectedBatch = document.getElementById("batch").value;
+
+                // Check if the batch is already added
+                if (!storedBatches.includes(selectedBatch)) {
+                    // Create a new batch item
+                    const batchItem = document.createElement("div");
+                    batchItem.textContent = selectedBatch;
+                    batchItem.classList.add("added-batch-item", "btn", "btn-primary");
+                    batchItem.addEventListener("click", function () {
+                        document.getElementById("batch").value = selectedBatch;
+                        toggleUploadForm();
+                    });
+                    document.getElementById("added-batches").appendChild(batchItem);
+
+                    // Add batch year to sessionStorage
+                    storedBatches.push(selectedBatch);
+                    sessionStorage.setItem("batches", JSON.stringify(storedBatches));
+                }
+            });
+
+            // Upload button click event
+            document.getElementById("upload-btn").addEventListener("click", function () {
+                // Update the hidden input value with the selected batch year
+                document.getElementById("selected-batch").value = document.getElementById("batch").value;
+                document.getElementById("upload-form").submit();
+            });
+
+            // Function to toggle upload form visibility
+            function toggleUploadForm() {
+                const uploadForm = document.getElementById("upload-form");
+                uploadForm.style.display = uploadForm.style.display === "none" ? "block" : "none";
+            }
+
+            // Function to display stored batch years
+            function displayStoredBatches(batches) {
+                const batchContainer = document.getElementById("added-batches");
+                batches.forEach(function(batch) {
+                    const batchItem = document.createElement("div");
+                    batchItem.textContent = batch;
+                    batchItem.classList.add("added-batch-item", "btn", "btn-primary");
+                    batchItem.addEventListener("click", function () {
+                        document.getElementById("batch").value = batch;
+                        toggleUploadForm();
+                    });
+                    batchContainer.appendChild(batchItem);
+                });
+            }
+        });
+    </script>
+    
+</body>
+</html>

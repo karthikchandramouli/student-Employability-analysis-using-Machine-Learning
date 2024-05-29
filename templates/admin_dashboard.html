@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Reset CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body Styles */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            color: #333; /* Set default text color */
+        }
+
+        /* Navigation Bar */
+        nav {
+            background-color: #007bff;
+            overflow: hidden;
+            margin-bottom: 20px;
+            display: flex; /* Use flexbox for layout */
+            justify-content: space-between; /* Space elements evenly */
+            align-items: center; /* Align items vertically */
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        nav ul li {
+            display: inline-block;
+            margin-right: 20px; /* Add spacing between navbar items */
+        }
+
+        nav ul li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px; /* Reduce padding for better alignment */
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        nav ul li a:hover {
+            background-color: #0056b3;
+        }
+
+        .active {
+            background-color: #0056b3;
+        }
+
+        /* Logout Button Styles */
+        .logout-button {
+            margin-right: 20px; /* Add margin to the right side */
+        }
+
+        .logout-button a {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #f44336;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .logout-button a:hover {
+            background-color: #d32f2f;
+        }
+
+        /* Page Header Styles */
+        header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 40px 0; /* Increase padding for better emphasis */
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2em; /* Increase header font size */
+        }
+
+        /* Table Styles */
+        .container {
+            padding: 0 15px;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        /* User Photo Styles */
+        .user-photo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #fff;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            font-size: 0.8em; /* Decrease footer font size for better alignment */
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <ul>
+            <li><a class="active" href="{{ url_for('admin_dashboard') }}">Home</a></li>
+            <li><a href="{{ url_for('student_details') }}">Upload Files</a></li>
+            <li><a href="{{ url_for('reports') }}">View Student Details</a></li>
+            <li><a href="{{ url_for('datavisualization') }}">Data Visualization Report</a></li>
+        </ul>
+        <div class="logout-button">
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </nav>
+    <header>
+        Placement Dashboard
+    </header>
+    <!-- Page Content -->
+    <div class="container">
+        <!-- Table to display data -->
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead class="thead-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Company Name</th>
+                        <th>Mobile Number</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <td>{{ user['id'] }}</td>
+                            <td>{{ user['username'] }}</td>
+                            <td>{{ user['mobile_number'] }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <footer>
+        &copy; 2024 Final Year Project
+    </footer>
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
